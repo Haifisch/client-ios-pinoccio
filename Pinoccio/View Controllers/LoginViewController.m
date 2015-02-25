@@ -29,9 +29,26 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [(UITextField*)[self.view viewWithTag:1] setDelegate:self];
-    [(UITextField*)[self.view viewWithTag:2] setDelegate:self];
-    [(UITextField*)[self.view viewWithTag:1] becomeFirstResponder];
+    UITextField *usernameField = (UITextField*)[self.view viewWithTag:1];
+    UITextField *passwordField = (UITextField*)[self.view viewWithTag:2];
+    [usernameField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Username or email" attributes:@{NSForegroundColorAttributeName: [UIColor blackColor]}]];
+    [passwordField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Password" attributes:@{NSForegroundColorAttributeName: [UIColor blackColor]}]];
+    // style username field
+    usernameField.layer.borderColor = [UIColor whiteColor].CGColor;
+    usernameField.layer.borderWidth = 0.5f;
+    usernameField.layer.masksToBounds = YES;
+    usernameField.layer.cornerRadius = 3.0f;
+    usernameField.backgroundColor = [UIColor whiteColor];
+    // style password field
+    passwordField.layer.borderColor = [UIColor whiteColor].CGColor;
+    passwordField.layer.borderWidth = 0.5f;
+    passwordField.layer.masksToBounds = YES;
+    passwordField.layer.cornerRadius = 3.0f;
+    passwordField.backgroundColor = [UIColor whiteColor];
+    
+    [usernameField setDelegate:self];
+    [passwordField setDelegate:self];
+    [usernameField becomeFirstResponder];
     // Do any additional setup after loading the view.
 }
 
@@ -89,15 +106,9 @@
     }
     return YES;
 }
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
 }
-*/
 
 @end

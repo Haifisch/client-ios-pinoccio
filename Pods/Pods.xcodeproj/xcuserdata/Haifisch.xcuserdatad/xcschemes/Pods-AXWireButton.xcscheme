@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4B75CCAD1C35483BA646041B"
+               BlueprintIdentifier = "BA7DBB775C26305FB3ABA8CF"
                BuildableName = "libPods-AXWireButton.a"
                BlueprintName = "Pods-AXWireButton"
                ReferencedContainer = "container:Pods.xcodeproj">

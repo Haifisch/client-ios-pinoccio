@@ -30,6 +30,14 @@
     [super viewDidLoad];
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [[(UITextField*) self.view viewWithTag:1] becomeFirstResponder];
+    self.consoleView.backgroundColor = [UIColor colorWithRed:43/255.0f green:53/255.0f blue:69/255.0f alpha:1];
+    self.view.backgroundColor = [UIColor colorWithRed:43/255.0f green:53/255.0f blue:69/255.0f alpha:1];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:31/255.0f green:38/255.0f blue:51.0f/255.0f alpha:1];
+    self.navigationController.navigationBar.translucent = NO;
+    [self.navigationController.navigationBar setTitleTextAttributes: @{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [UIFont fontWithName:@"Lato-Regular" size:20.0f]}];
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
     // Do any additional setup after loading the view.
 }
 
@@ -41,7 +49,7 @@
 - (IBAction)sendCommand:(id)sender {
     NSURL *urlString = [NSURL URLWithString:[[NSString stringWithFormat:@"https://api.pinocc.io/v1/%@/%@/command/%@?token=%@",self.troopID,self.scoutID,self.consoleInput.text,self.token] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Running...";
+    hud.labelText = @"Sending...";
     NSURLRequest *request = [NSURLRequest requestWithURL:urlString];
     [NSURLConnection sendAsynchronousRequest:request
                                        queue:[NSOperationQueue mainQueue]

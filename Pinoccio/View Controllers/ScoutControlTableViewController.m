@@ -29,6 +29,7 @@
     [super viewDidAppear:animated];
     
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
     self.navigationController.navigationBar.translucent = YES;
     [self.navigationController.navigationBar setBarStyle:UIBarStyleDefault];
     [self.navigationController.navigationBar setTitleTextAttributes: @{
