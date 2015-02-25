@@ -38,15 +38,6 @@
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    if ([JNKeychain loadValueForKey:@"APIToken"] == nil) {
-        globalTroopDict = [[NSMutableDictionary alloc] init];
-        globalScoutList = [[NSMutableArray alloc] init];
-        [self.tableView reloadData];
-        [self performSegueWithIdentifier:@"loginSegue" sender:self];
-    }else {
-        [self checkLogin:NO];
-    }
-    
     self.tableView.backgroundColor = [UIColor colorWithRed:31/255.0f green:38/255.0f blue:51.0f/255.0f alpha:1];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:31/255.0f green:38/255.0f blue:51.0f/255.0f alpha:1];
     self.navigationController.navigationBar.translucent = NO;
@@ -82,6 +73,16 @@
     refreshControl = [[UIRefreshControl alloc]init];
     [self.tableView addSubview:refreshControl];
     [refreshControl addTarget:self action:@selector(refreshTroops) forControlEvents:UIControlEventValueChanged];
+    
+    if ([JNKeychain loadValueForKey:@"APIToken"] == nil) {
+        globalTroopDict = [[NSMutableDictionary alloc] init];
+        globalScoutList = [[NSMutableArray alloc] init];
+        [self.tableView reloadData];
+        [self performSegueWithIdentifier:@"loginSegue" sender:self];
+    }else {
+        [self checkLogin:NO];
+    }
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -118,8 +119,8 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     // Cell specifics
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ScoutCell"];
-    if (cell == nil) {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"Cell%ld%ld", (long)indexPath.row, (long)indexPath.section]];
+    if (cell == NULL) {
         // Scout Name Label Specifics
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ScoutCell"];
         cell.backgroundColor = [UIColor colorWithRed:31/255.0f green:38/255.0f blue:51.0f/255.0f alpha:1];
@@ -142,6 +143,11 @@
         ledView.layer.borderWidth = 2.5;
         [cell addSubview:ledView];
         [cell addSubview:scoutNameLabel];
+        
+        UIView *selectedBackgroundView = [[UIView alloc] init];
+        [selectedBackgroundView setBackgroundColor:[UIColor colorWithRed:51/255.0f green:58/255.0f blue:101.0f/255.0f alpha:1]];
+        [cell setSelectedBackgroundView:selectedBackgroundView];
+        
         return cell;
         
     }
@@ -310,10 +316,8 @@
     
 }
 -(void)setupColorViews {
-    int troopCount = 0;
-    while (troopCount < [globalTroopDict[@"data"] count]) {
+    for (int troopCount = 0; troopCount < [globalTroopDict[@"data"] count]; troopCount++) {
         int scoutCount = 0;
-        NSLog(@"Scout total: %lu", (unsigned long)[globalScoutList[troopCount][@"data"] count]);
         while (scoutCount < [globalScoutList[troopCount][@"data"] count]) {
             UIColor *scoutLEDColor;
             UIColor *scoutTorchColor;
@@ -334,7 +338,6 @@
             scoutCount++;
         }
         scoutCount = 0;
-        troopCount++;
     }
 }
 -(void)refreshTroops {
@@ -347,12 +350,9 @@
             [self.tableView reloadData];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
+                [self setupColorViews];
             });
         });
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-            [self setupColorViews];
-        });
-      
     }
 }
 
